@@ -1,8 +1,24 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 import uuid
 
-class Secao(models.Model):
+class BaseModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    class Meta:
+        abstract = True
+
+
+class User(AbstractUser, BaseModel):
+    email = models.EmailField(verbose_name='email', max_length=255, unique=True)
+    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
+    USERNAME_FIELD = 'email'
+
+    def get_username(self):
+        return self.email
+
+
+class Secao(BaseModel):
     Nome = models.CharField(max_length=45)
     InseridoPor = models.CharField(max_length=45,  null=True)
     DataInsercao = models.DateTimeField(auto_now_add=True)
@@ -12,8 +28,7 @@ class Secao(models.Model):
     def __str__(self):
         return self.Nome
 
-class Graduacao(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+class Graduacao(BaseModel):
     Nome = models.CharField(max_length=45)
     InseridoPor = models.CharField(max_length=45,  null=True)
     DataInsercao = models.DateTimeField(auto_now_add=True)
@@ -23,8 +38,7 @@ class Graduacao(models.Model):
     def __str__(self):
         return self.Nome
 
-class Militar(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+class Militar(BaseModel):
     Nome = models.CharField(max_length=45)
     NomeGuerra = models.CharField(max_length=45)
     Email = models.EmailField(max_length=100, unique=True)

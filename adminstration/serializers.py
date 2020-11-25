@@ -1,5 +1,12 @@
 from rest_framework import serializers
-from adminstration.models import Militar, Graduacao, Secao
+from adminstration.models import Militar, Graduacao, Secao, User
+from djoser.serializers import UserCreateSerializer, UserSerializer
+
+class UserCreateSerializer(UserCreateSerializer):
+    class Meta(UserCreateSerializer.Meta):
+        model = User
+        fields = ('id','username', 'email', 'password', 'first_name', 'last_name')
+
 
 class SecaoSerializer(serializers.ModelSerializer):
     class Meta:
