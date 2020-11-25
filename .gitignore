@@ -2,4 +2,5 @@
 media/*
 .vscode/
 .static/
+*/__pycache__/
 
